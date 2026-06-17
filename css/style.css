@@ -1,0 +1,31 @@
+body{
+    font-family: Arial, sans-serif;
+}
+
+.hero{
+    padding:80px 20px;
+    text-align:center;
+    background:#f8f9fa;
+}
+
+.card{
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+footer{
+    margin-top:50px;
+}
+
+.dark-mode{
+    background-color:#121212;
+    color:white;
+}
+
+.dark-mode .card{
+    background-color:#222;
+    color:white;
+}

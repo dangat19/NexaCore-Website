@@ -18,15 +18,20 @@
         </button>
         <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav ms-auto">
+                <!-- active class should be set on the current page’s link -->
                 <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
                 <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
                 <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
-                <li class="nav-item"><a class="nav-link active" href="faq.html">FAQ</a></li>
+                <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
                 <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
             </ul>
-            <div class="ms-3 d-flex">
+            <div class="ms-3 d-flex align-items-center">
+                <!-- THEME TOGGLE -->
+                <button id="themeToggle" class="theme-toggle me-2" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
                 <a href="signin.html" class="btn btn-outline-light me-2">Sign In</a>
                 <a href="signup.html" class="btn btn-primary">Sign Up</a>
             </div>

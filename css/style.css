@@ -1,441 +1,130 @@
-/* ==========================
-   GLOBAL STYLES
-========================== */
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+/* ----- Global Reset & Base ----- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-top: 56px; /* fixed navbar offset */
 }
 
-html{
-    scroll-behavior:smooth;
+/* ----- Hero Section (used on index) ----- */
+.hero {
+    background: linear-gradient(135deg, #0d1b2a 0%, #1b3a4b 100%);
+    color: white;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    padding: 4rem 0;
+}
+.hero h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+.hero .lead {
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
 }
 
-body{
-    font-family:Arial, sans-serif;
-    background:#f5f5f5;
-    color:#333;
-    transition:0.4s;
-    line-height:1.6;
+/* ----- Service Cards (used on index & services) ----- */
+.service-card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+}
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 30px rgba(0,0,0,0.12);
+}
+.service-card i {
+    font-size: 2.8rem;
+    margin-bottom: 0.75rem;
 }
 
-/* ==========================
-   NAVIGATION
-========================== */
-
-nav{
-    background:#0d47a1;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px 40px;
+/* ----- Testimonial Cards (index) ----- */
+.testimonial-card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    transition: box-shadow 0.2s;
+}
+.testimonial-card:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
 
-.logo{
-    color:white;
-    font-size:24px;
-    font-weight:bold;
+/* ----- Footer ----- */
+.footer {
+    background: #0d1b2a;
+    color: #ddd;
+    padding: 2.5rem 0 1.5rem;
+    margin-top: 3rem;
+}
+.footer a {
+    color: #aaa;
+    transition: color 0.2s;
+}
+.footer a:hover {
+    color: #fff;
+    text-decoration: none;
 }
 
-.nav-links{
-    display:flex;
-    list-style:none;
+/* ----- Gallery Grid (gallery.html) ----- */
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s;
+}
+.gallery-item:hover {
+    transform: scale(1.02);
+}
+.gallery-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
 }
 
-.nav-links li{
-    margin-left:20px;
+/* ----- FAQ Accordion (faq.html) ----- */
+.faq-accordion .accordion-button:not(.collapsed) {
+    background-color: #e9f0f5;
+    color: #0d1b2a;
+}
+.faq-accordion .accordion-button:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 27, 42, 0.15);
 }
 
-.nav-links a{
-    text-decoration:none;
-    color:white;
-    font-weight:bold;
-    transition:0.3s;
+/* ----- Forms (signin, signup, contact) ----- */
+.form-card {
+    border: none;
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    padding: 2rem;
+    background: #fff;
+}
+.form-card .form-control {
+    border-radius: 0.5rem;
+    padding: 0.6rem 1rem;
 }
 
-.nav-links a:hover{
-    color:#ffcc00;
+/* ----- Page Headers ----- */
+.page-header {
+    background: #f8fafc;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 2rem;
+}
+.page-header h1 {
+    font-weight: 600;
+    color: #0d1b2a;
 }
 
-/* ==========================
-   HERO SECTION
-========================== */
-
-.hero{
-    text-align:center;
-    padding:100px 20px;
-    background:linear-gradient(
-        rgba(0,0,0,0.5),
-        rgba(0,0,0,0.5)
-    ),
-    url("../images/banner.jpg");
-
-    background-size:cover;
-    background-position:center;
-    color:white;
-}
-
-.hero h1{
-    font-size:50px;
-    margin-bottom:20px;
-}
-
-.hero p{
-    font-size:20px;
-    margin-bottom:20px;
-}
-
-.hero button{
-    padding:12px 25px;
-    border:none;
-    border-radius:5px;
-    background:#ffcc00;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-.hero button:hover{
-    transform:scale(1.05);
-}
-
-/* ==========================
-   CONTENT
-========================== */
-
-.content{
-    padding:50px;
-}
-
-/* ==========================
-   CARDS
-========================== */
-
-.card{
-    background:white;
-    padding:25px;
-    margin:20px 0;
-    border-radius:10px;
-
-    box-shadow:
-    0 4px 10px rgba(0,0,0,0.1);
-
-    transition:0.3s;
-}
-
-.card:hover{
-    transform:translateY(-5px);
-}
-
-/* ==========================
-   SERVICES GRID
-========================== */
-
-.service-grid{
-    display:grid;
-
-    grid-template-columns:
-    repeat(auto-fit,minmax(250px,1fr));
-
-    gap:20px;
-}
-
-.service-card{
-    background:white;
-    padding:20px;
-    text-align:center;
-    border-radius:10px;
-
-    box-shadow:
-    0 4px 10px rgba(0,0,0,0.1);
-}
-
-/* ==========================
-   GALLERY
-========================== */
-
-.gallery{
-    display:grid;
-
-    grid-template-columns:
-    repeat(auto-fit,minmax(250px,1fr));
-
-    gap:15px;
-}
-
-.gallery img{
-    width:100%;
-    height:220px;
-    object-fit:cover;
-    border-radius:10px;
-
-    transition:0.3s;
-}
-
-.gallery img:hover{
-    transform:scale(1.05);
-}
-
-/* ==========================
-   CONTACT FORM
-========================== */
-
-form{
-    max-width:600px;
-    margin:auto;
-}
-
-input,
-textarea{
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    border:1px solid #ccc;
-    border-radius:5px;
-}
-
-textarea{
-    height:150px;
-}
-
-button{
-    padding:12px 25px;
-    border:none;
-    border-radius:5px;
-    background:#0d47a1;
-    color:white;
-    cursor:pointer;
-}
-
-button:hover{
-    opacity:0.9;
-}
-
-/* ==========================
-   FAQ ACCORDION
-========================== */
-
-.faq-question{
-
-    width:100%;
-    text-align:left;
-
-    padding:15px;
-
-    background:#0d47a1;
-    color:white;
-
-    border:none;
-    cursor:pointer;
-
-    margin-top:10px;
-}
-
-.faq-answer{
-
-    background:#ffffff;
-
-    overflow:hidden;
-
-    max-height:0;
-
-    transition:max-height 0.3s ease;
-
-    padding:0 15px;
-}
-/* =======================
-   AUTH PAGES
-======================= */
-
-.auth-body{
-    background:#0f172a;
-
-    min-height:100vh;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    font-family:Arial,sans-serif;
-}
-
-
-.auth-container{
-
-    width:450px;
-
-    background:white;
-
-    padding:40px;
-
-    border-radius:20px;
-
-    box-shadow:0 10px 30px rgba(0,0,0,.3);
-}
-
-.auth-container h1{
-    text-align:center;
-    margin-bottom:25px;
-}
-
-.auth-form{
-    display:flex;
-    flex-direction:column;
-    gap:15px;
-}
-
-.auth-form input{
-    padding:15px;
-    border-radius:10px;
-    border:none;
-}
-
-.signin-btn{
-    background:#0d47a1;
-    color:white;
-    padding:15px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-}
-
-.divider{
-    text-align:center;
-    margin:20px 0;
-}
-
-.social-btn{
-    width:100%;
-    padding:16px;
-
-    margin-bottom:15px;
-
-    border:1px solid #555;
-
-    background:#000;
-    color:white;
-
-    border-radius:40px;
-
-    cursor:pointer;
-
-    font-size:16px;
-
-    display:flex;
-    align-items:center;
-    gap:15px;
-}
-
-.social-btn:hover{
-    background:#111;
-}
-
-.social-btn i{
-    font-size:22px;
-}
-
-.auth-container p{
-    text-align:center;
-    margin-top:20px;
-}
-
-.auth-container a{
-    color:#4da6ff;
-    text-decoration:none;
-}
-
-/* ==========================
-   DARK MODE
-========================== */
-
-.dark-mode{
-    background:#121212;
-    color:white;
-}
-
-.dark-mode nav{
-    background:#000;
-}
-
-.dark-mode .card,
-.dark-mode .service-card,
-.dark-mode .faq-answer{
-    background:#1e1e1e;
-    color:white;
-}
-
-.dark-mode input,
-.dark-mode textarea{
-    background:#222;
-    color:white;
-    border:1px solid #555;
-}
-
-/* ==========================
-   FOOTER
-========================== */
-
-footer{
-    background:#0d47a1;
-    color:white;
-    text-align:center;
-    padding:20px;
-    margin-top:40px;
-}
-
-/* ==========================
-   SCROLL BUTTON
-========================== */
-
-#topBtn{
-
-    display:none;
-
-    position:fixed;
-
-    bottom:20px;
-    right:20px;
-
-    z-index:99;
-
-    padding:15px;
-
-    border:none;
-
-    border-radius:50%;
-
-    background:#0d47a1;
-
-    color:white;
-
-    cursor:pointer;
-}
-
-/* ==========================
-   MOBILE RESPONSIVE
-========================== */
-
-@media(max-width:768px){
-
-    nav{
-        flex-direction:column;
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.2rem;
     }
-
-    .nav-links{
-        flex-direction:column;
-        text-align:center;
-        margin-top:10px;
-    }
-
-    .nav-links li{
-        margin:10px 0;
-    }
-
-    .hero h1{
-        font-size:35px;
-    }
-
-    .content{
-        padding:20px;
+    .hero .lead {
+        font-size: 1.1rem;
     }
 }

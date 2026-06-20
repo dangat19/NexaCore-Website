@@ -83,26 +83,6 @@ function createFAQ() {
         });
     });
 }
-// Social Login Simulation
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const socialButtons =
-        document.querySelectorAll(".social-btn");
-
-    socialButtons.forEach(button => {
-
-        button.addEventListener("click", () => {
-
-            const provider =
-                button.textContent.trim();
-
-            alert("Redirecting to " + provider);
-        });
-    });
-
-});
-
 // ==========================
 // SCROLL TO TOP BUTTON
 // ==========================
@@ -127,4 +107,61 @@ function topFunction() {
         top: 0,
         behavior: "smooth"
     });
+}
+// SIGN UP
+
+function signUp() {
+
+    let fullname =
+        document.getElementById("fullname").value;
+
+    let email =
+        document.getElementById("signupEmail").value;
+
+    let password =
+        document.getElementById("signupPassword").value;
+
+    localStorage.setItem("fullname", fullname);
+    localStorage.setItem("email", email);
+    localStorage.setItem("password", password);
+
+    alert("Account created successfully!");
+
+    window.location.href = "signin.html";
+
+    return false;
+}
+
+
+// SIGN IN
+
+function signIn() {
+
+    let email =
+        document.getElementById("signinEmail").value;
+
+    let password =
+        document.getElementById("signinPassword").value;
+
+    let savedEmail =
+        localStorage.getItem("email");
+
+    let savedPassword =
+        localStorage.getItem("password");
+
+    if(email === savedEmail &&
+       password === savedPassword){
+
+        localStorage.setItem("loggedIn", "true");
+
+        alert("Login Successful!");
+
+        window.location.href = "index.html";
+
+    }else{
+
+        alert("Incorrect email or password");
+    }
+
+    return false;
 }

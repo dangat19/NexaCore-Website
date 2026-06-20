@@ -17,6 +17,7 @@
         .social-btn {
             width: 100%; border-radius: 50px; padding: 0.6rem 0; font-weight: 500;
             transition: all 0.2s; border: 1px solid #dee2e6; background: #fff;
+            cursor: pointer;
         }
         .social-btn:hover { transform: scale(1.02); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
         .divider-text {
@@ -37,7 +38,7 @@
 </head>
 <body>
 
-<!-- ===== NAVBAR with THEME TOGGLE ===== -->
+<!-- ===== NAVBAR ===== -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container">
         <a class="navbar-brand fw-bold" href="index.html"><i class="fas fa-microchip me-2"></i>TechNova</a>
@@ -79,14 +80,13 @@
                     <button class="social-btn" id="showPhoneSignup"><i class="fas fa-phone me-2 text-primary"></i>Sign up with Phone Number</button>
                 </div>
 
-                <!-- Phone Number Input -->
                 <div id="phoneSignupSection" style="display: none;" class="mb-3">
                     <div class="phone-input-group d-flex">
                         <input type="tel" class="form-control" placeholder="+1 234 567 8900" id="phoneSignupInput" />
                         <button class="btn btn-primary" id="sendOtpSignupBtn">Send OTP</button>
                     </div>
-                    <div class="otp-section d-flex gap-2">
-                        <input type="text" class="form-control" placeholder="Enter OTP" id="otpSignupInput" style="flex:2;" />
+                    <div class="otp-section d-flex gap-2 mt-2">
+                        <input type="text" class="form-control" placeholder="Enter 6-digit OTP" id="otpSignupInput" style="flex:2;" />
                         <button class="btn btn-outline-success" id="verifyOtpSignupBtn">Verify</button>
                     </div>
                     <small class="text-muted">We'll send a 6-digit code to verify your number.</small>

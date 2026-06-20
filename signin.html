@@ -17,6 +17,7 @@
         .social-btn {
             width: 100%; border-radius: 50px; padding: 0.6rem 0; font-weight: 500;
             transition: all 0.2s; border: 1px solid #dee2e6; background: #fff;
+            cursor: pointer;
         }
         .social-btn:hover { transform: scale(1.02); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
         .divider-text {
@@ -31,11 +32,19 @@
         .phone-input-group .form-control { border-radius: 0.5rem 0 0 0.5rem; }
         .phone-input-group .btn { border-radius: 0 0.5rem 0.5rem 0; }
         .otp-section { margin-top: 0.5rem; }
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            min-width: 300px;
+        }
     </style>
 </head>
 <body>
 
-<!-- ===== NAVBAR with THEME TOGGLE ===== -->
+<!-- ===== NAVBAR ===== -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container">
         <a class="navbar-brand fw-bold" href="index.html"><i class="fas fa-microchip me-2"></i>TechNova</a>
@@ -70,7 +79,6 @@
             <div class="form-card">
                 <h3 class="text-center mb-4"><i class="fas fa-sign-in-alt me-2 text-primary"></i>Welcome Back</h3>
 
-                <!-- Social & Phone Options (all working) -->
                 <div class="d-grid gap-2 mb-3">
                     <button class="social-btn"><i class="fab fa-google me-2 text-danger"></i>Sign in with Google</button>
                     <button class="social-btn"><i class="fab fa-github me-2 text-dark"></i>Sign in with GitHub</button>
@@ -78,14 +86,13 @@
                     <button class="social-btn" id="showPhoneSignin"><i class="fas fa-phone me-2 text-primary"></i>Sign in with Phone Number</button>
                 </div>
 
-                <!-- Phone Number Input (hidden by default) -->
                 <div id="phoneSigninSection" style="display: none;" class="mb-3">
                     <div class="phone-input-group d-flex">
                         <input type="tel" class="form-control" placeholder="+1 234 567 8900" id="phoneInput" />
                         <button class="btn btn-primary" id="sendOtpBtn">Send OTP</button>
                     </div>
-                    <div class="otp-section d-flex gap-2">
-                        <input type="text" class="form-control" placeholder="Enter OTP" id="otpInput" style="flex:2;" />
+                    <div class="otp-section d-flex gap-2 mt-2">
+                        <input type="text" class="form-control" placeholder="Enter 6-digit OTP" id="otpInput" style="flex:2;" />
                         <button class="btn btn-outline-success" id="verifyOtpBtn">Verify</button>
                     </div>
                     <small class="text-muted">We'll send a 6-digit code to verify your number.</small>
@@ -112,7 +119,7 @@
                             <input type="checkbox" class="form-check-input" id="remember" />
                             <label class="form-check-label" for="remember">Remember me</label>
                         </div>
-                        <a href="#" class="text-decoration-none small">Forgot password?</a>
+                        <a href="#" class="text-decoration-none small" id="forgotPasswordLink">Forgot password?</a>
                     </div>
                     <button type="submit" class="btn btn-primary w-100 py-2">Sign In</button>
                 </form>

@@ -105,7 +105,57 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ===== OTP DEMO =====
+    // ===== SHOW TOAST MESSAGE (helper) =====
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `alert alert-${type} position-fixed top-0 start-50 translate-middle-x mt-3 shadow-lg`;
+        toast.style.zIndex = '9999';
+        toast.style.minWidth = '300px';
+        toast.style.textAlign = 'center';
+        toast.innerHTML = message;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.transition = 'opacity 0.5s';
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 500);
+        }, 2500);
+    }
+
+    // ===== REDIRECT WITH SUCCESS MESSAGE =====
+    function signInSuccess(provider) {
+        showToast(`✅ Signed in with ${provider}! Redirecting...`, 'success');
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 1500);
+    }
+
+    function signUpSuccess(provider) {
+        showToast(`🎉 Account created with ${provider}! Redirecting...`, 'success');
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 1500);
+    }
+
+    // ===== SOCIAL SIGN-IN BUTTONS =====
+    document.querySelectorAll('.social-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const text = this.textContent.trim();
+            let provider = text.replace(/Sign in with /i, '').replace(/Sign up with /i, '').trim();
+            if (!provider) provider = 'Social';
+            
+            // Check if this is sign-in or sign-up page
+            const isSignUp = window.location.pathname.includes('signup.html');
+            if (isSignUp) {
+                signUpSuccess(provider);
+            } else {
+                signInSuccess(provider);
+            }
+        });
+    });
+
+    // ===== PHONE SIGN-IN / SIGN-UP =====
+    // Send OTP
     document.querySelectorAll('#sendOtpBtn, #sendOtpSignupBtn').forEach(btn => {
         if (btn) {
             btn.addEventListener('click', function (e) {
@@ -113,13 +163,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 const parent = this.closest('.phone-input-group');
                 const input = parent.querySelector('input[type="tel"]');
                 if (input && input.value.trim().length > 5) {
-                    alert('📱 OTP sent to ' + input.value);
+                    showToast(`📱 OTP sent to ${input.value}`, 'info');
                 } else {
-                    alert('Please enter a valid phone number.');
+                    showToast('⚠️ Please enter a valid phone number.', 'warning');
                 }
             });
         }
     });
+
+    // Verify OTP
     document.querySelectorAll('#verifyOtpBtn, #verifyOtpSignupBtn').forEach(btn => {
         if (btn) {
             btn.addEventListener('click', function (e) {
@@ -127,34 +179,73 @@ document.addEventListener('DOMContentLoaded', function () {
                 const parent = this.closest('.otp-section');
                 const input = parent.querySelector('input[type="text"]');
                 if (input && input.value.trim().length === 6) {
-                    alert('✅ Phone number verified successfully!');
+                    const isSignUp = window.location.pathname.includes('signup.html');
+                    if (isSignUp) {
+                        signUpSuccess('Phone Number');
+                    } else {
+                        signInSuccess('Phone Number');
+                    }
                 } else {
-                    alert('Please enter a 6-digit OTP.');
+                    showToast('⚠️ Please enter a 6-digit OTP.', 'warning');
                 }
             });
         }
     });
 
-    // ===== SOCIAL & PHONE BUTTONS – WORKING DEMO =====
-    // For sign-in page (class .social-btn and .phone-signin-btn)
-    document.querySelectorAll('.social-btn, .phone-signin-btn').forEach(btn => {
-        btn.addEventListener('click', function (e) {
+    // ===== EMAIL SIGN-IN FORM =====
+    const signinForm = document.getElementById('signinForm');
+    if (signinForm) {
+        signinForm.addEventListener('submit', function (e) {
             e.preventDefault();
-            const text = this.textContent.trim() || this.innerText.trim();
-            let provider = text.replace(/Sign in with /i, '').replace(/Sign up with /i, '').trim();
-            if (!provider) provider = 'Social';
-            alert(`🔐 You are signing in with ${provider}.\n(Simulated – integrate real OAuth later.)`);
+            const email = document.getElementById('signinEmail').value.trim();
+            const pwd = document.getElementById('signinPassword').value.trim();
+            if (email && pwd) {
+                signInSuccess('Email');
+            } else {
+                showToast('⚠️ Please fill in all fields.', 'warning');
+            }
         });
-    });
+    }
 
-    // For sign-up page
-    document.querySelectorAll('.social-btn, .phone-signup-btn').forEach(btn => {
-        btn.addEventListener('click', function (e) {
+    // ===== EMAIL SIGN-UP FORM =====
+    const signupForm = document.getElementById('signupForm');
+    if (signupForm) {
+        signupForm.addEventListener('submit', function (e) {
             e.preventDefault();
-            const text = this.textContent.trim() || this.innerText.trim();
-            let provider = text.replace(/Sign up with /i, '').trim();
-            if (!provider) provider = 'Social';
-            alert(`📝 You are signing up with ${provider}.\n(Simulated – integrate real OAuth later.)`);
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const pwd = document.getElementById('signupPassword').value.trim();
+            const confirmPwd = document.getElementById('confirmPassword').value.trim();
+            const terms = document.getElementById('terms').checked;
+
+            if (!firstName || !lastName || !email || !pwd || !confirmPwd) {
+                showToast('⚠️ Please fill in all fields.', 'warning');
+                return;
+            }
+            if (pwd.length < 8) {
+                showToast('⚠️ Password must be at least 8 characters.', 'warning');
+                return;
+            }
+            if (pwd !== confirmPwd) {
+                showToast('⚠️ Passwords do not match.', 'warning');
+                return;
+            }
+            if (!terms) {
+                showToast('⚠️ Please agree to the Terms of Service.', 'warning');
+                return;
+            }
+            signUpSuccess('Email');
         });
+    }
+
+    // ===== "FORGOT PASSWORD?" LINK =====
+    document.querySelectorAll('a[href="#"]').forEach(link => {
+        if (link.textContent.trim() === 'Forgot password?') {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                showToast('📧 Password reset link sent to your email.', 'info');
+            });
+        }
     });
 });

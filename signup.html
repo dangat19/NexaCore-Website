@@ -1,57 +1,44 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - TechNova</title>
+    <title>Sign Up - TechNova Solutions</title>
 
     <link rel="stylesheet" href="css/style.css">
 
     <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 
 <body class="auth-body">
-    <header>
-    <nav>
-        <div class="logo">TechNova Solutions</div>
-
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="gallery.html">Gallery</a></li>
-            <li><a href="faq.html">FAQs</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            <li><a href="signin.html">Sign In</a></li>
-            <li><a href="signup.html">Sign Up</a></li>
-         </ul>
-         <button onclick="toggleDarkMode()">
-        🌙 Dark Mode
-    </button>
-    </nav>
-</header>
 
 <div class="auth-container">
 
     <h1>Create Account</h1>
 
-    <form class="auth-form">
+    <form class="auth-form" onsubmit="return signUp()">
 
-        <input type="text"
-               placeholder="Full Name"
-               required>
+        <input
+            type="text"
+            id="fullname"
+            placeholder="Full Name"
+            required>
 
-        <input type="email"
-               placeholder="Email Address"
-               required>
+        <input
+            type="email"
+            id="signupEmail"
+            placeholder="Email Address"
+            required>
 
-        <input type="password"
-               placeholder="Password"
-               required>
+        <input
+            type="password"
+            id="signupPassword"
+            placeholder="Password"
+            required>
 
-        <button class="signin-btn">
+        <button type="submit" class="signin-btn">
             Sign Up
         </button>
 
@@ -61,27 +48,27 @@
         <span>OR</span>
     </div>
 
-    <button class="social-btn phone">
+    <button class="social-btn">
         <i class="fa-solid fa-mobile-screen"></i>
         Continue with Phone Number
     </button>
 
-    <button class="social-btn google">
+    <button class="social-btn">
         <i class="fa-brands fa-google"></i>
         Continue with Google
     </button>
 
-    <button class="social-btn facebook">
+    <button class="social-btn">
         <i class="fa-brands fa-facebook"></i>
         Continue with Facebook
     </button>
 
-    <button class="social-btn apple">
+    <button class="social-btn">
         <i class="fa-brands fa-apple"></i>
         Continue with Apple
     </button>
 
-    <p>
+    <p class="auth-link">
         Already have an account?
         <a href="signin.html">Sign In</a>
     </p>
@@ -92,3 +79,4 @@
 
 </body>
 </html>
+```

@@ -248,17 +248,29 @@ button:hover{
 ======================= */
 
 .auth-body{
-    background:#000;
-    color:white;
+    background:#0f172a;
+
+    min-height:100vh;
+
     display:flex;
     justify-content:center;
     align-items:center;
-    min-height:100vh;
+
+    font-family:Arial,sans-serif;
 }
 
+
 .auth-container{
-    width:400px;
-    max-width:90%;
+
+    width:450px;
+
+    background:white;
+
+    padding:40px;
+
+    border-radius:20px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
 }
 
 .auth-container h1{

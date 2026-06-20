@@ -37,7 +37,7 @@
 </head>
 <body>
 
-<!-- ===== NAVBAR ===== -->
+<!-- ===== NAVBAR with THEME TOGGLE ===== -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container">
         <a class="navbar-brand fw-bold" href="index.html"><i class="fas fa-microchip me-2"></i>TechNova</a>
@@ -54,7 +54,10 @@
                 <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
                 <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
             </ul>
-            <div class="ms-3 d-flex">
+            <div class="ms-3 d-flex align-items-center">
+                <button id="themeToggle" class="theme-toggle me-2" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
                 <a href="signin.html" class="btn btn-outline-light me-2">Sign In</a>
                 <a href="signup.html" class="btn btn-primary active">Sign Up</a>
             </div>
@@ -69,7 +72,6 @@
             <div class="form-card">
                 <h3 class="text-center mb-4"><i class="fas fa-user-plus me-2 text-success"></i>Create Account</h3>
 
-                <!-- Social & Phone Options -->
                 <div class="d-grid gap-2 mb-3">
                     <button class="social-btn"><i class="fab fa-google me-2 text-danger"></i>Sign up with Google</button>
                     <button class="social-btn"><i class="fab fa-github me-2 text-dark"></i>Sign up with GitHub</button>
@@ -77,7 +79,7 @@
                     <button class="social-btn" id="showPhoneSignup"><i class="fas fa-phone me-2 text-primary"></i>Sign up with Phone Number</button>
                 </div>
 
-                <!-- Phone Number Input (hidden by default) -->
+                <!-- Phone Number Input -->
                 <div id="phoneSignupSection" style="display: none;" class="mb-3">
                     <div class="phone-input-group d-flex">
                         <input type="tel" class="form-control" placeholder="+1 234 567 8900" id="phoneSignupInput" />

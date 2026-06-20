@@ -1,10 +1,64 @@
-/* ----- Global Reset & Base ----- */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding-top: 56px; /* fixed navbar offset */
+/* ----- THEME VARIABLES ----- */
+:root {
+    --bg-body: #ffffff;
+    --text-color: #212529;
+    --card-bg: #ffffff;
+    --card-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    --border-color: #dee2e6;
+    --navbar-bg: #0d1b2a;
+    --footer-bg: #0d1b2a;
+    --header-bg: #f8fafc;
 }
 
-/* ----- Hero Section (used on index) ----- */
+[data-theme="dark"] {
+    --bg-body: #1a1a2e;
+    --text-color: #e0e0e0;
+    --card-bg: #16213e;
+    --card-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    --border-color: #2a3a5e;
+    --navbar-bg: #0a0a1a;
+    --footer-bg: #0a0a1a;
+    --header-bg: #1a1a2e;
+}
+
+body {
+    background-color: var(--bg-body);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-top: 56px;
+}
+
+.card, .form-card, .service-card, .testimonial-card {
+    background-color: var(--card-bg) !important;
+    box-shadow: var(--card-shadow) !important;
+    border-color: var(--border-color) !important;
+}
+
+.page-header {
+    background-color: var(--header-bg) !important;
+    border-bottom-color: var(--border-color) !important;
+}
+
+.navbar, .footer {
+    background-color: var(--navbar-bg) !important;
+}
+
+/* theme toggle button */
+.theme-toggle {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    transition: transform 0.2s;
+}
+.theme-toggle:hover {
+    transform: rotate(20deg);
+}
+
+/* ----- Hero Section ----- */
 .hero {
     background: linear-gradient(135deg, #0d1b2a 0%, #1b3a4b 100%);
     color: white;
@@ -23,7 +77,7 @@ body {
     margin-bottom: 2rem;
 }
 
-/* ----- Service Cards (used on index & services) ----- */
+/* ----- Service Cards ----- */
 .service-card {
     border: none;
     border-radius: 1rem;
@@ -40,7 +94,7 @@ body {
     margin-bottom: 0.75rem;
 }
 
-/* ----- Testimonial Cards (index) ----- */
+/* ----- Testimonial Cards ----- */
 .testimonial-card {
     border: none;
     border-radius: 1rem;
@@ -53,7 +107,6 @@ body {
 
 /* ----- Footer ----- */
 .footer {
-    background: #0d1b2a;
     color: #ddd;
     padding: 2.5rem 0 1.5rem;
     margin-top: 3rem;
@@ -67,7 +120,7 @@ body {
     text-decoration: none;
 }
 
-/* ----- Gallery Grid (gallery.html) ----- */
+/* ----- Gallery ----- */
 .gallery-item {
     position: relative;
     overflow: hidden;
@@ -85,7 +138,7 @@ body {
     display: block;
 }
 
-/* ----- FAQ Accordion (faq.html) ----- */
+/* ----- FAQ ----- */
 .faq-accordion .accordion-button:not(.collapsed) {
     background-color: #e9f0f5;
     color: #0d1b2a;
@@ -94,11 +147,10 @@ body {
     box-shadow: 0 0 0 0.25rem rgba(13, 27, 42, 0.15);
 }
 
-/* ----- Forms (signin, signup, contact) ----- */
+/* ----- Forms ----- */
 .form-card {
     border: none;
     border-radius: 1.5rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
     padding: 2rem;
     background: #fff;
 }
@@ -109,7 +161,6 @@ body {
 
 /* ----- Page Headers ----- */
 .page-header {
-    background: #f8fafc;
     padding: 2.5rem 0;
     border-bottom: 1px solid #e9ecef;
     margin-bottom: 2rem;
@@ -119,7 +170,7 @@ body {
     color: #0d1b2a;
 }
 
-/* Responsive tweaks */
+/* Responsive */
 @media (max-width: 768px) {
     .hero h1 {
         font-size: 2.2rem;

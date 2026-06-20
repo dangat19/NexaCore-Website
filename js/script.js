@@ -1,13 +1,27 @@
-// ===== COUNTER ANIMATION (from index.html) =====
 document.addEventListener('DOMContentLoaded', function () {
+
+    // ===== THEME TOGGLE =====
+    const themeToggle = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    if (themeToggle) {
+        themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        themeToggle.addEventListener('click', function () {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            this.innerHTML = next === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        });
+    }
+
+    // ===== COUNTER ANIMATION (index) =====
     const counters = document.querySelectorAll('.counter');
     const speed = 150;
-
     const animateCounter = (counter) => {
         const target = parseInt(counter.getAttribute('data-target'));
         let current = 0;
         const increment = target / speed;
-
         const updateCounter = () => {
             current += increment;
             if (current < target) {
@@ -19,7 +33,6 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         updateCounter();
     };
-
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -28,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }, { threshold: 0.5 });
-
     counters.forEach(counter => observer.observe(counter));
 
     // ===== PASSWORD TOGGLE =====
@@ -48,17 +60,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // ===== PASSWORD MATCH CHECK (signup) =====
+    // ===== PASSWORD MATCH (signup) =====
     const password = document.getElementById('signupPassword');
     const confirm = document.getElementById('confirmPassword');
     const matchMsg = document.getElementById('matchMessage');
-
     if (password && confirm && matchMsg) {
         const checkMatch = () => {
-            if (confirm.value.length === 0) {
-                matchMsg.innerHTML = '';
-                return;
-            }
+            if (confirm.value.length === 0) { matchMsg.innerHTML = ''; return; }
             if (password.value === confirm.value) {
                 matchMsg.innerHTML = '<i class="fas fa-check-circle text-success me-1"></i> Passwords match!';
                 matchMsg.style.color = '#198754';
@@ -84,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 : '<i class="fas fa-phone me-2 text-primary"></i>Sign in with Phone Number';
         });
     }
-
     const showPhoneSignup = document.getElementById('showPhoneSignup');
     const phoneSignupSection = document.getElementById('phoneSignupSection');
     if (showPhoneSignup && phoneSignupSection) {
@@ -98,8 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ===== OTP PLACEHOLDER LOGIC (just UI demo) =====
-    // Send OTP buttons
+    // ===== OTP DEMO =====
     document.querySelectorAll('#sendOtpBtn, #sendOtpSignupBtn').forEach(btn => {
         if (btn) {
             btn.addEventListener('click', function (e) {
@@ -114,8 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     });
-
-    // Verify OTP buttons
     document.querySelectorAll('#verifyOtpBtn, #verifyOtpSignupBtn').forEach(btn => {
         if (btn) {
             btn.addEventListener('click', function (e) {
@@ -129,5 +133,28 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         }
+    });
+
+    // ===== SOCIAL & PHONE BUTTONS – WORKING DEMO =====
+    // For sign-in page (class .social-btn and .phone-signin-btn)
+    document.querySelectorAll('.social-btn, .phone-signin-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const text = this.textContent.trim() || this.innerText.trim();
+            let provider = text.replace(/Sign in with /i, '').replace(/Sign up with /i, '').trim();
+            if (!provider) provider = 'Social';
+            alert(`🔐 You are signing in with ${provider}.\n(Simulated – integrate real OAuth later.)`);
+        });
+    });
+
+    // For sign-up page
+    document.querySelectorAll('.social-btn, .phone-signup-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const text = this.textContent.trim() || this.innerText.trim();
+            let provider = text.replace(/Sign up with /i, '').trim();
+            if (!provider) provider = 'Social';
+            alert(`📝 You are signing up with ${provider}.\n(Simulated – integrate real OAuth later.)`);
+        });
     });
 });

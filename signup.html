@@ -7,9 +7,37 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link rel="stylesheet" href="css/style.css" />
+    <style>
+        .password-wrapper { position: relative; }
+        .password-wrapper .toggle-password {
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+            cursor: pointer; color: #6c757d; background: transparent; border: none; z-index: 10;
+        }
+        .password-wrapper .toggle-password:hover { color: #0d1b2a; }
+        .social-btn {
+            width: 100%; border-radius: 50px; padding: 0.6rem 0; font-weight: 500;
+            transition: all 0.2s; border: 1px solid #dee2e6; background: #fff;
+        }
+        .social-btn:hover { transform: scale(1.02); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+        .divider-text {
+            display: flex; align-items: center; text-align: center;
+            color: #6c757d; font-size: 0.9rem;
+        }
+        .divider-text::before, .divider-text::after {
+            content: ''; flex: 1; border-bottom: 1px solid #dee2e6;
+        }
+        .divider-text::before { margin-right: 0.5rem; }
+        .divider-text::after { margin-left: 0.5rem; }
+        .phone-input-group .form-control { border-radius: 0.5rem 0 0 0.5rem; }
+        .phone-input-group .btn { border-radius: 0 0.5rem 0.5rem 0; }
+        .otp-section { margin-top: 0.5rem; }
+        .match-check { font-size: 0.85rem; margin-top: 0.25rem; }
+        .password-hint { font-size: 0.8rem; color: #6c757d; margin-top: 0.25rem; }
+    </style>
 </head>
 <body>
-<!-- navbar (no active) -->
+
+<!-- ===== NAVBAR ===== -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container">
         <a class="navbar-brand fw-bold" href="index.html"><i class="fas fa-microchip me-2"></i>TechNova</a>
@@ -28,41 +56,82 @@
             </ul>
             <div class="ms-3 d-flex">
                 <a href="signin.html" class="btn btn-outline-light me-2">Sign In</a>
-                <a href="signup.html" class="btn btn-primary">Sign Up</a>
+                <a href="signup.html" class="btn btn-primary active">Sign Up</a>
             </div>
         </div>
     </div>
 </nav>
 
+<!-- ===== SIGN UP FORM ===== -->
 <section class="container py-5" style="min-height: 70vh;">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-6 col-lg-5">
             <div class="form-card">
-                <h3 class="text-center mb-4"><i class="fas fa-user-plus me-2"></i>Create Account</h3>
-                <form>
+                <h3 class="text-center mb-4"><i class="fas fa-user-plus me-2 text-success"></i>Create Account</h3>
+
+                <!-- Social & Phone Options -->
+                <div class="d-grid gap-2 mb-3">
+                    <button class="social-btn"><i class="fab fa-google me-2 text-danger"></i>Sign up with Google</button>
+                    <button class="social-btn"><i class="fab fa-github me-2 text-dark"></i>Sign up with GitHub</button>
+                    <button class="social-btn"><i class="fab fa-apple me-2 text-dark"></i>Sign up with Apple</button>
+                    <button class="social-btn" id="showPhoneSignup"><i class="fas fa-phone me-2 text-primary"></i>Sign up with Phone Number</button>
+                </div>
+
+                <!-- Phone Number Input (hidden by default) -->
+                <div id="phoneSignupSection" style="display: none;" class="mb-3">
+                    <div class="phone-input-group d-flex">
+                        <input type="tel" class="form-control" placeholder="+1 234 567 8900" id="phoneSignupInput" />
+                        <button class="btn btn-primary" id="sendOtpSignupBtn">Send OTP</button>
+                    </div>
+                    <div class="otp-section d-flex gap-2">
+                        <input type="text" class="form-control" placeholder="Enter OTP" id="otpSignupInput" style="flex:2;" />
+                        <button class="btn btn-outline-success" id="verifyOtpSignupBtn">Verify</button>
+                    </div>
+                    <small class="text-muted">We'll send a 6-digit code to verify your number.</small>
+                </div>
+
+                <div class="divider-text my-3">or sign up with email</div>
+
+                <form id="signupForm">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="firstName" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="firstName" placeholder="John" />
+                            <input type="text" class="form-control" id="firstName" placeholder="John" required />
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="lastName" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="lastName" placeholder="Doe" />
+                            <input type="text" class="form-control" id="lastName" placeholder="Doe" required />
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="signupEmail" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="signupEmail" placeholder="name@example.com" />
+                        <input type="email" class="form-control" id="signupEmail" placeholder="name@example.com" required />
                     </div>
                     <div class="mb-3">
                         <label for="signupPassword" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="signupPassword" placeholder="Create a strong password" />
+                        <div class="password-wrapper">
+                            <input type="password" class="form-control" id="signupPassword" placeholder="Min 8 characters" required />
+                            <button type="button" class="toggle-password" data-target="signupPassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-hint"><i class="fas fa-info-circle me-1"></i>Must be at least 8 characters</div>
                     </div>
                     <div class="mb-3">
                         <label for="confirmPassword" class="form-label">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirmPassword" placeholder="Re-enter password" />
+                        <div class="password-wrapper">
+                            <input type="password" class="form-control" id="confirmPassword" placeholder="Re-enter password" required />
+                            <button type="button" class="toggle-password" data-target="confirmPassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div id="matchMessage" class="match-check"></div>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="terms" required />
+                        <label class="form-check-label" for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100 py-2">Sign Up</button>
                 </form>
                 <p class="mt-3 text-center">Already have an account? <a href="signin.html">Sign In</a></p>
             </div>
@@ -70,6 +139,7 @@
     </div>
 </section>
 
+<!-- ===== FOOTER ===== -->
 <footer class="footer text-center">
     <div class="container">
         <div class="row">

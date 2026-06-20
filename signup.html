@@ -1,82 +1,102 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up - TechNova Solutions</title>
-
-    <link rel="stylesheet" href="css/style.css">
-
-    <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
 </head>
-
-<body class="auth-body">
-
-<div class="auth-container">
-
-    <h1>Create Account</h1>
-
-    <form class="auth-form" onsubmit="return signUp()">
-
-        <input
-            type="text"
-            id="fullname"
-            placeholder="Full Name"
-            required>
-
-        <input
-            type="email"
-            id="signupEmail"
-            placeholder="Email Address"
-            required>
-
-        <input
-            type="password"
-            id="signupPassword"
-            placeholder="Password"
-            required>
-
-        <button type="submit" class="signin-btn">
-            Sign Up
+<body>
+<!-- navbar (no active) -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="index.html"><i class="fas fa-microchip me-2"></i>TechNova</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <span class="navbar-toggler-icon"></span>
         </button>
-
-    </form>
-
-    <div class="divider">
-        <span>OR</span>
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+                <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+                <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+                <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+            </ul>
+            <div class="ms-3 d-flex">
+                <a href="signin.html" class="btn btn-outline-light me-2">Sign In</a>
+                <a href="signup.html" class="btn btn-primary">Sign Up</a>
+            </div>
+        </div>
     </div>
+</nav>
 
-    <button class="social-btn">
-        <i class="fa-solid fa-mobile-screen"></i>
-        Continue with Phone Number
-    </button>
+<section class="container py-5" style="min-height: 70vh;">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="form-card">
+                <h3 class="text-center mb-4"><i class="fas fa-user-plus me-2"></i>Create Account</h3>
+                <form>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="firstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstName" placeholder="John" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="lastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" placeholder="Doe" />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="signupEmail" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="signupEmail" placeholder="name@example.com" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="signupPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="signupPassword" placeholder="Create a strong password" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Re-enter password" />
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                </form>
+                <p class="mt-3 text-center">Already have an account? <a href="signin.html">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+</section>
 
-    <button class="social-btn">
-        <i class="fa-brands fa-google"></i>
-        Continue with Google
-    </button>
+<footer class="footer text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-3 mb-md-0">
+                <h5><i class="fas fa-microchip me-2"></i>TechNova</h5>
+                <p class="small">Innovating the future, one solution at a time.</p>
+            </div>
+            <div class="col-md-4 mb-3 mb-md-0">
+                <h6>Quick Links</h6>
+                <a href="about.html" class="text-white-50 text-decoration-none me-2">About</a>
+                <a href="services.html" class="text-white-50 text-decoration-none me-2">Services</a>
+                <a href="contact.html" class="text-white-50 text-decoration-none">Contact</a>
+            </div>
+            <div class="col-md-4">
+                <h6>Follow Us</h6>
+                <a href="#" class="text-white-50 me-3"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-white-50 me-3"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-white-50 me-3"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="text-white-50"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+        <hr class="bg-secondary" />
+        <p class="mb-0">&copy; 2026 TechNova Solutions. All rights reserved.</p>
+    </div>
+</footer>
 
-    <button class="social-btn">
-        <i class="fa-brands fa-facebook"></i>
-        Continue with Facebook
-    </button>
-
-    <button class="social-btn">
-        <i class="fa-brands fa-apple"></i>
-        Continue with Apple
-    </button>
-
-    <p class="auth-link">
-        Already have an account?
-        <a href="signin.html">Sign In</a>
-    </p>
-
-</div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/script.js"></script>
-
 </body>
 </html>
-```

@@ -1,33 +1,56 @@
-/* ----- THEME VARIABLES ----- */
+/* ============================================================
+   THEME VARIABLES
+   ============================================================ */
 :root {
-    --bg-body: #ffffff;
-    --text-color: #212529;
-    --text-muted: #6c757d;
-    --card-bg: #ffffff;
-    --card-shadow: 0 10px 30px rgba(0,0,0,0.06);
-    --border-color: #dee2e6;
-    --navbar-bg: #0d1b2a;
-    --footer-bg: #0d1b2a;
-    --header-bg: #f8fafc;
-    --heading-color: #0d1b2a;
-    --link-color: #0d6efd;
+    --bg-body:               #ffffff;
+    --text-color:            #212529;
+    --text-muted:            #6c757d;
+    --card-bg:               #ffffff;
+    --card-shadow:           0 10px 30px rgba(0,0,0,0.06);
+    --border-color:          #dee2e6;
+    --navbar-bg:             #0d1b2a;
+    --footer-bg:             #0d1b2a;
+    --header-bg:             #f8fafc;
+    --heading-color:         #0d1b2a;
+    --link-color:            #0d6efd;
+
+    /* FIX: new variables for inputs, accordion, icons, placeholders */
+    --input-bg:              #ffffff;
+    --input-group-bg:        #e9ecef;
+    --input-group-color:     #495057;
+    --accordion-active-bg:   #e9f0f5;
+    --accordion-active-color:#0d1b2a;
+    --placeholder-color:     #adb5bd;
+    --icon-color:            #0d1b2a;
 }
 
 [data-theme="dark"] {
-    --bg-body: #1a1a2e;
-    --text-color: #e8e8e8;
-    --text-muted: #a0a0b8;
-    --card-bg: #16213e;
-    --card-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    --border-color: #2a3a5e;
-    --navbar-bg: #0a0a1a;
-    --footer-bg: #0a0a1a;
-    --header-bg: #1a1a2e;
-    --heading-color: #ffffff;
-    --link-color: #6ea8fe;
+    --bg-body:               #1a1a2e;
+    --text-color:            #e8e8e8;
+    --text-muted:            #a0a0b8;
+    --card-bg:               #16213e;
+    --card-shadow:           0 10px 30px rgba(0,0,0,0.4);
+    --border-color:          #2a3a5e;
+    --navbar-bg:             #0a0a1a;
+    --footer-bg:             #0a0a1a;
+    --header-bg:             #1a1a2e;
+    --heading-color:         #ffffff;
+    --link-color:            #6ea8fe;
+
+    /* FIX: dark-mode input/icon values */
+    --input-bg:              #0f1929;
+    --input-group-bg:        #1a2744;
+    --input-group-color:     #c0c8d8;
+    --accordion-active-bg:   #1e3060;
+    --accordion-active-color:#e8e8e8;
+    --placeholder-color:     #5a6580;
+    --icon-color:            #a0b4d0;
 }
 
-/* ----- GLOBAL ----- */
+
+/* ============================================================
+   GLOBAL
+   ============================================================ */
 body {
     background-color: var(--bg-body);
     color: var(--text-color);
@@ -36,12 +59,10 @@ body {
     padding-top: 56px;
 }
 
-/* Headings */
 h1, h2, h3, h4, h5, h6 {
     color: var(--heading-color);
 }
 
-/* Links */
 a:not(.btn):not(.navbar-brand):not(.nav-link) {
     color: var(--link-color);
 }
@@ -50,24 +71,109 @@ a:not(.btn):not(.navbar-brand):not(.nav-link):hover {
     filter: brightness(0.8);
 }
 
-/* Muted text */
 .text-muted {
     color: var(--text-muted) !important;
 }
 
-/* Cards, Forms, etc. */
+
+/* ============================================================
+   ICONS — FIX: icons now respect theme
+   Bootstrap Icons, Font Awesome, and generic <i> tags all use
+   --icon-color by default. Utility classes (text-primary etc.)
+   still override via inheritance.
+   ============================================================ */
+i,
+[class^="bi-"], [class*=" bi-"],
+.fa, .fas, .far, .fal, .fad, .fab {
+    color: var(--icon-color);
+}
+/* Let Bootstrap utility classes keep their colours */
+.text-primary > i, i.text-primary,
+.text-success > i, i.text-success,
+.text-warning > i, i.text-warning,
+.text-danger  > i, i.text-danger,
+.text-info    > i, i.text-info,
+.text-secondary > i, i.text-secondary {
+    color: inherit;
+}
+
+
+/* ============================================================
+   NAVBAR — FIX: text always visible on dark background
+   ============================================================ */
+.navbar {
+    background-color: var(--navbar-bg) !important;
+}
+.navbar .nav-link,
+.navbar .navbar-brand,
+.navbar .navbar-text {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+.navbar .nav-link:hover,
+.navbar .nav-link.active,
+.navbar .nav-link:focus {
+    color: #ffffff !important;
+}
+/* Hamburger toggler always visible on dark navbar */
+.navbar .navbar-toggler-icon {
+    filter: invert(1) brightness(2);
+}
+/* Navbar icons */
+.navbar i,
+.navbar [class^="bi-"],
+.navbar [class*=" bi-"] {
+    color: #ffffff;
+}
+
+
+/* ============================================================
+   FOOTER — FIX: footer bg is always dark, text must be light
+   ============================================================ */
+.footer {
+    background-color: var(--footer-bg) !important;
+    color: #cccccc;
+}
+.footer h1, .footer h2, .footer h3,
+.footer h4, .footer h5, .footer h6 {
+    color: #ffffff;
+}
+.footer p, .footer span, .footer li {
+    color: #cccccc;
+}
+.footer a {
+    color: #aaaaaa !important;
+    transition: color 0.2s;
+}
+.footer a:hover {
+    color: #ffffff !important;
+    text-decoration: none;
+}
+.footer i,
+.footer [class^="bi-"],
+.footer [class*=" bi-"],
+.footer .fa, .footer .fas, .footer .far {
+    color: #aaaaaa;
+}
+
+
+/* ============================================================
+   CARDS
+   ============================================================ */
 .card, .form-card, .service-card, .testimonial-card {
     background-color: var(--card-bg) !important;
     box-shadow: var(--card-shadow) !important;
     border-color: var(--border-color) !important;
     color: var(--text-color) !important;
 }
-
 .card-body, .card-footer, .card-header {
     background-color: transparent !important;
     color: inherit !important;
 }
 
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
 .page-header {
     background-color: var(--header-bg) !important;
     border-bottom-color: var(--border-color) !important;
@@ -76,25 +182,14 @@ a:not(.btn):not(.navbar-brand):not(.nav-link):hover {
     color: var(--heading-color);
 }
 
-.navbar, .footer {
-    background-color: var(--navbar-bg) !important;
-}
 
-/* Footer links */
-.footer a {
-    color: #aaa !important;
-    transition: color 0.2s;
-}
-.footer a:hover {
-    color: #fff !important;
-    text-decoration: none;
-}
-
-/* ----- THEME TOGGLE BUTTON ----- */
+/* ============================================================
+   THEME TOGGLE BUTTON
+   ============================================================ */
 .theme-toggle {
     background: transparent;
     border: none;
-    color: #fff;
+    color: #ffffff;
     font-size: 1.2rem;
     cursor: pointer;
     padding: 0.25rem 0.5rem;
@@ -103,8 +198,14 @@ a:not(.btn):not(.navbar-brand):not(.nav-link):hover {
 .theme-toggle:hover {
     transform: rotate(20deg);
 }
+.theme-toggle i {
+    color: #ffffff;  /* always white on dark navbar */
+}
 
-/* ----- HERO ----- */
+
+/* ============================================================
+   HERO — icons and text always white (dark bg section)
+   ============================================================ */
 .hero {
     background: linear-gradient(135deg, #0d1b2a 0%, #1b3a4b 100%);
     color: white;
@@ -117,14 +218,23 @@ a:not(.btn):not(.navbar-brand):not(.nav-link):hover {
     font-size: 3.5rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
-    color: #fff;
+    color: #ffffff;
 }
 .hero .lead {
     font-size: 1.4rem;
     margin-bottom: 2rem;
+    color: rgba(255, 255, 255, 0.85);
+}
+.hero i,
+.hero [class^="bi-"],
+.hero [class*=" bi-"] {
+    color: #ffffff;
 }
 
-/* ----- SERVICE CARDS ----- */
+
+/* ============================================================
+   SERVICE CARDS
+   ============================================================ */
 .service-card {
     border: none;
     border-radius: 1rem;
@@ -136,12 +246,17 @@ a:not(.btn):not(.navbar-brand):not(.nav-link):hover {
     transform: translateY(-8px);
     box-shadow: 0 16px 30px rgba(0,0,0,0.12);
 }
+/* FIX: service icons use accent colour so they're visible in both themes */
 .service-card i {
     font-size: 2.8rem;
     margin-bottom: 0.75rem;
+    color: var(--link-color);
 }
 
-/* ----- TESTIMONIALS ----- */
+
+/* ============================================================
+   TESTIMONIALS
+   ============================================================ */
 .testimonial-card {
     border: none;
     border-radius: 1rem;
@@ -152,7 +267,10 @@ a:not(.btn):not(.navbar-brand):not(.nav-link):hover {
     box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
 
-/* ----- GALLERY ----- */
+
+/* ============================================================
+   GALLERY
+   ============================================================ */
 .gallery-item {
     position: relative;
     overflow: hidden;
@@ -170,46 +288,113 @@ a:not(.btn):not(.navbar-brand):not(.nav-link):hover {
     display: block;
 }
 
-/* ----- FAQ ----- */
-.faq-accordion .accordion-button:not(.collapsed) {
-    background-color: #e9f0f5;
-    color: #0d1b2a;
-}
-.faq-accordion .accordion-button:focus {
-    box-shadow: 0 0 0 0.25rem rgba(13, 27, 42, 0.15);
+
+/* ============================================================
+   FAQ ACCORDION — FIX: was hardcoded to light colours only
+   ============================================================ */
+.faq-accordion .accordion-item {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
 }
 .faq-accordion .accordion-button {
     background-color: var(--card-bg);
     color: var(--text-color);
 }
+/* FIX: open panel now uses theme variables */
+.faq-accordion .accordion-button:not(.collapsed) {
+    background-color: var(--accordion-active-bg);
+    color: var(--accordion-active-color);
+    box-shadow: none;
+}
+.faq-accordion .accordion-button:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 27, 42, 0.15);
+}
+/* FIX: Bootstrap's chevron arrow is invisible in dark mode */
+[data-theme="dark"] .faq-accordion .accordion-button::after {
+    filter: invert(1) brightness(2);
+}
 .faq-accordion .accordion-body {
     background-color: var(--card-bg);
     color: var(--text-color);
 }
+/* Icons inside accordion */
+.faq-accordion i {
+    color: var(--icon-color);
+}
 
-/* ----- FORMS ----- */
+
+/* ============================================================
+   FORMS — GLOBAL
+   FIX: all inputs/selects/textareas now theme-aware, not just
+   those inside .form-card
+   ============================================================ */
+input,
+select,
+textarea,
+.form-control,
+.form-select {
+    background-color: var(--input-bg) !important;
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+}
+input:focus,
+select:focus,
+textarea:focus,
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--input-bg) !important;
+    color: var(--text-color) !important;
+    border-color: var(--link-color) !important;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* FIX: placeholder text visible in both themes */
+::placeholder {
+    color: var(--placeholder-color) !important;
+    opacity: 1;
+}
+
+/* FIX: input-group addon (e.g. @ prefix, flag) theme-aware */
+.input-group-text {
+    background-color: var(--input-group-bg) !important;
+    color: var(--input-group-color) !important;
+    border-color: var(--border-color) !important;
+}
+.input-group-text i {
+    color: var(--input-group-color);
+}
+
+/* Checkboxes / radio buttons */
+.form-check-input {
+    background-color: var(--input-bg);
+    border-color: var(--border-color);
+}
+.form-check-label {
+    color: var(--text-color);
+}
+
+
+/* ============================================================
+   FORM CARD
+   ============================================================ */
 .form-card {
     border: none;
     border-radius: 1.5rem;
     padding: 2rem;
-    background: #fff;
+    /* background handled by .card, .form-card rule above */
 }
 .form-card .form-control {
     border-radius: 0.5rem;
     padding: 0.6rem 1rem;
-    background-color: var(--bg-body);
-    color: var(--text-color);
-    border-color: var(--border-color);
-}
-.form-card .form-control:focus {
-    border-color: var(--link-color);
-    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
 }
 .form-card .form-check-label {
     color: var(--text-color);
 }
 
-/* ----- SOCIAL BUTTONS (signin/signup) ----- */
+
+/* ============================================================
+   SOCIAL BUTTONS
+   ============================================================ */
 .social-btn {
     width: 100%;
     border-radius: 50px;
@@ -229,7 +414,10 @@ a:not(.btn):not(.navbar-brand):not(.nav-link):hover {
     color: inherit;
 }
 
-/* ----- DIVIDER ----- */
+
+/* ============================================================
+   DIVIDER
+   ============================================================ */
 .divider-text {
     display: flex;
     align-items: center;
@@ -244,9 +432,12 @@ a:not(.btn):not(.navbar-brand):not(.nav-link):hover {
     border-bottom: 1px solid var(--border-color);
 }
 .divider-text::before { margin-right: 0.5rem; }
-.divider-text::after { margin-left: 0.5rem; }
+.divider-text::after  { margin-left:  0.5rem; }
 
-/* ----- PHONE INPUT ----- */
+
+/* ============================================================
+   PHONE / OTP INPUT
+   ============================================================ */
 .phone-input-group .form-control {
     border-radius: 0.5rem 0 0 0.5rem;
 }
@@ -255,7 +446,10 @@ a:not(.btn):not(.navbar-brand):not(.nav-link):hover {
 }
 .otp-section { margin-top: 0.5rem; }
 
-/* ----- PASSWORD HINT & MATCH ----- */
+
+/* ============================================================
+   PASSWORD HINT & MATCH
+   ============================================================ */
 .password-hint {
     font-size: 0.8rem;
     color: var(--text-muted);
@@ -266,20 +460,84 @@ a:not(.btn):not(.navbar-brand):not(.nav-link):hover {
     margin-top: 0.25rem;
 }
 
-/* ----- COUNTERS (index stats) ----- */
-.bg-dark .counter {
-    color: #fff;
+
+/* ============================================================
+   COUNTERS (stats section)
+   ============================================================ */
+.bg-dark .counter { color: #ffffff; }
+.bg-dark p        { color: #cccccc; }
+
+
+/* ============================================================
+   DROPDOWN MENUS — FIX: Bootstrap dropdowns theme-aware
+   ============================================================ */
+.dropdown-menu {
+    background-color: var(--card-bg) !important;
+    border-color: var(--border-color) !important;
 }
-.bg-dark p {
-    color: #ccc;
+.dropdown-item {
+    color: var(--text-color) !important;
+}
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: var(--header-bg) !important;
+    color: var(--heading-color) !important;
+}
+.dropdown-divider {
+    border-color: var(--border-color) !important;
 }
 
-/* ----- RESPONSIVE ----- */
+
+/* ============================================================
+   LIST GROUP — FIX: theme-aware
+   ============================================================ */
+.list-group-item {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+
+/* ============================================================
+   MODAL — FIX: modal background and close button
+   ============================================================ */
+.modal-content {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+.modal-header,
+.modal-footer {
+    border-color: var(--border-color);
+}
+/* FIX: Bootstrap's X (close) button invisible in dark mode */
+[data-theme="dark"] .btn-close {
+    filter: invert(1) brightness(2);
+}
+
+
+/* ============================================================
+   TABLES — FIX: theme-aware
+   ============================================================ */
+.table {
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+.table > :not(caption) > * > * {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+[data-theme="dark"] .table-striped > tbody > tr:nth-of-type(odd) > * {
+    background-color: rgba(255, 255, 255, 0.04);
+    color: var(--text-color);
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
 @media (max-width: 768px) {
-    .hero h1 {
-        font-size: 2.2rem;
-    }
-    .hero .lead {
-        font-size: 1.1rem;
-    }
+    .hero h1   { font-size: 2.2rem; }
+    .hero .lead { font-size: 1.1rem; }
 }

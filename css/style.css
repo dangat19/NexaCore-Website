@@ -1,5 +1,5 @@
 /* ============================================================
-   THEME VARIABLES
+   THEME VARIABLES - ENHANCED
    ============================================================ */
 :root {
     --bg-body:               #ffffff;
@@ -7,14 +7,14 @@
     --text-muted:            #6c757d;
     --card-bg:               #ffffff;
     --card-shadow:           0 10px 30px rgba(0,0,0,0.06);
+    --card-shadow-hover:     0 20px 50px rgba(0,0,0,0.12);
     --border-color:          #dee2e6;
     --navbar-bg:             #0d1b2a;
     --footer-bg:             #0d1b2a;
     --header-bg:             #f8fafc;
     --heading-color:         #0d1b2a;
     --link-color:            #0d6efd;
-
-    /* FIX: new variables for inputs, accordion, icons, placeholders */
+    
     --input-bg:              #ffffff;
     --input-group-bg:        #e9ecef;
     --input-group-color:     #495057;
@@ -22,6 +22,12 @@
     --accordion-active-color:#0d1b2a;
     --placeholder-color:     #adb5bd;
     --icon-color:            #0d1b2a;
+    
+    /* NEW: Animation & depth variables */
+    --transition-smooth:     all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition-fast:       all 0.15s ease;
+    --gradient-primary:      linear-gradient(135deg, #0d1b2a 0%, #1b3a4b 100%);
+    --gradient-accent:       linear-gradient(135deg, #0d6efd 0%, #0051d8 100%);
 }
 
 [data-theme="dark"] {
@@ -30,14 +36,14 @@
     --text-muted:            #a0a0b8;
     --card-bg:               #16213e;
     --card-shadow:           0 10px 30px rgba(0,0,0,0.4);
+    --card-shadow-hover:     0 20px 50px rgba(0,0,0,0.6);
     --border-color:          #2a3a5e;
     --navbar-bg:             #0a0a1a;
     --footer-bg:             #0a0a1a;
     --header-bg:             #1a1a2e;
     --heading-color:         #ffffff;
     --link-color:            #6ea8fe;
-
-    /* FIX: dark-mode input/icon values */
+    
     --input-bg:              #0f1929;
     --input-group-bg:        #1a2744;
     --input-group-color:     #c0c8d8;
@@ -47,6 +53,78 @@
     --icon-color:            #a0b4d0;
 }
 
+/* ============================================================
+   ANIMATIONS - Scroll fade-in, hover lifts, etc.
+   ============================================================ */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+@keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+}
+
+/* Scroll-triggered animations (use with JS or Intersection Observer) */
+.fade-in-on-scroll {
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+.fade-in-left-on-scroll {
+    animation: fadeInLeft 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+.fade-in-right-on-scroll {
+    animation: fadeInRight 0.8s ease-out forwards;
+    opacity: 0;
+}
 
 /* ============================================================
    GLOBAL
@@ -61,11 +139,14 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     color: var(--heading-color);
+    font-weight: 600;
 }
 
 a:not(.btn):not(.navbar-brand):not(.nav-link) {
     color: var(--link-color);
+    transition: var(--transition-fast);
 }
+
 a:not(.btn):not(.navbar-brand):not(.nav-link):hover {
     color: var(--link-color);
     filter: brightness(0.8);
@@ -75,116 +156,144 @@ a:not(.btn):not(.navbar-brand):not(.nav-link):hover {
     color: var(--text-muted) !important;
 }
 
-
 /* ============================================================
-   ICONS — FIX: icons now respect theme
-   Bootstrap Icons, Font Awesome, and generic <i> tags all use
-   --icon-color by default. Utility classes (text-primary etc.)
-   still override via inheritance.
+   ICONS - Theme-aware with accent color
    ============================================================ */
 i,
 [class^="bi-"], [class*=" bi-"],
 .fa, .fas, .far, .fal, .fad, .fab {
     color: var(--icon-color);
+    transition: var(--transition-fast);
 }
-/* Let Bootstrap utility classes keep their colours */
+
 .text-primary > i, i.text-primary,
 .text-success > i, i.text-success,
 .text-warning > i, i.text-warning,
-.text-danger  > i, i.text-danger,
-.text-info    > i, i.text-info,
+.text-danger > i, i.text-danger,
+.text-info > i, i.text-info,
 .text-secondary > i, i.text-secondary {
     color: inherit;
 }
 
-
 /* ============================================================
-   NAVBAR — FIX: text always visible on dark background
+   NAVBAR - Enhanced with animations
    ============================================================ */
 .navbar {
     background-color: var(--navbar-bg) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: var(--transition-smooth);
 }
+
 .navbar .nav-link,
 .navbar .navbar-brand,
 .navbar .navbar-text {
     color: rgba(255, 255, 255, 0.85) !important;
+    transition: var(--transition-fast);
 }
+
 .navbar .nav-link:hover,
 .navbar .nav-link.active,
 .navbar .nav-link:focus {
     color: #ffffff !important;
+    transform: translateY(-2px);
 }
-/* Hamburger toggler always visible on dark navbar */
+
 .navbar .navbar-toggler-icon {
     filter: invert(1) brightness(2);
 }
-/* Navbar icons */
+
 .navbar i,
 .navbar [class^="bi-"],
 .navbar [class*=" bi-"] {
     color: #ffffff;
 }
 
-
 /* ============================================================
-   FOOTER — FIX: footer bg is always dark, text must be light
+   FOOTER - Enhanced styling
    ============================================================ */
 .footer {
     background-color: var(--footer-bg) !important;
     color: #cccccc;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 .footer h1, .footer h2, .footer h3,
 .footer h4, .footer h5, .footer h6 {
     color: #ffffff;
+    margin-bottom: 1rem;
 }
+
 .footer p, .footer span, .footer li {
     color: #cccccc;
+    line-height: 1.8;
 }
+
 .footer a {
     color: #aaaaaa !important;
-    transition: color 0.2s;
-}
-.footer a:hover {
-    color: #ffffff !important;
+    transition: var(--transition-fast);
     text-decoration: none;
 }
+
+.footer a:hover {
+    color: #ffffff !important;
+}
+
 .footer i,
 .footer [class^="bi-"],
 .footer [class*=" bi-"],
 .footer .fa, .footer .fas, .footer .far {
     color: #aaaaaa;
+    transition: var(--transition-fast);
 }
 
+.footer a:hover i {
+    color: #ffffff;
+}
 
 /* ============================================================
-   CARDS
+   CARDS - Enhanced with gradients & better shadows
    ============================================================ */
 .card, .form-card, .service-card, .testimonial-card {
     background-color: var(--card-bg) !important;
     box-shadow: var(--card-shadow) !important;
     border-color: var(--border-color) !important;
     color: var(--text-color) !important;
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
 }
+
+.card:hover, 
+.form-card:hover, 
+.service-card:hover, 
+.testimonial-card:hover {
+    box-shadow: var(--card-shadow-hover) !important;
+    transform: translateY(-8px);
+}
+
 .card-body, .card-footer, .card-header {
     background-color: transparent !important;
     color: inherit !important;
 }
 
-
 /* ============================================================
-   PAGE HEADER
+   PAGE HEADER - With gradient
    ============================================================ */
 .page-header {
-    background-color: var(--header-bg) !important;
-    border-bottom-color: var(--border-color) !important;
+    background: linear-gradient(135deg, var(--header-bg) 0%, rgba(13, 27, 42, 0.05) 100%);
+    border-bottom: 2px solid var(--border-color);
+    padding: 2rem 0;
 }
+
 .page-header h1 {
     color: var(--heading-color);
+    font-size: 2.5rem;
 }
 
-
 /* ============================================================
-   THEME TOGGLE BUTTON
+   THEME TOGGLE - Smooth rotation & pulse
    ============================================================ */
 .theme-toggle {
     background: transparent;
@@ -193,140 +302,225 @@ i,
     font-size: 1.2rem;
     cursor: pointer;
     padding: 0.25rem 0.5rem;
-    transition: transform 0.2s;
-}
-.theme-toggle:hover {
-    transform: rotate(20deg);
-}
-.theme-toggle i {
-    color: #ffffff;  /* always white on dark navbar */
+    transition: var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+.theme-toggle:hover {
+    transform: rotate(20deg) scale(1.1);
+}
+
+.theme-toggle i {
+    color: #ffffff;
+}
 
 /* ============================================================
-   HERO — icons and text always white (dark bg section)
+   HERO - With background image & animated overlay
    ============================================================ */
 .hero {
-    background: linear-gradient(135deg, #0d1b2a 0%, #1b3a4b 100%);
+    background: var(--gradient-primary), 
+                url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1400&q=80') center/cover;
     color: white;
     min-height: 70vh;
     display: flex;
     align-items: center;
+    justify-content: center;
     padding: 4rem 0;
+    position: relative;
+    overflow: hidden;
 }
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,%3Csvg width="100" height="100" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M0 50 Q25 0 50 50 T100 50" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/%3E%3C/svg%3E');
+    animation: drift 20s linear infinite;
+    z-index: 1;
+}
+
+@keyframes drift {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(100px, 100px); }
+}
+
+.hero > * {
+    position: relative;
+    z-index: 2;
+}
+
 .hero h1 {
     font-size: 3.5rem;
-    font-weight: 700;
+    font-weight: 800;
     margin-bottom: 1.5rem;
     color: #ffffff;
+    animation: fadeInUp 0.8s ease-out;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
+
 .hero .lead {
     font-size: 1.4rem;
     margin-bottom: 2rem;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.9);
+    animation: fadeInUp 0.8s ease-out 0.1s both;
 }
+
 .hero i,
 .hero [class^="bi-"],
 .hero [class*=" bi-"] {
     color: #ffffff;
 }
 
+.hero .btn {
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+}
 
 /* ============================================================
-   SERVICE CARDS
+   SERVICE CARDS - Enhanced with gradients & icons
    ============================================================ */
 .service-card {
-    border: none;
+    border: 1px solid var(--border-color);
     border-radius: 1rem;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition-smooth);
     height: 100%;
+    background: linear-gradient(135deg, var(--card-bg) 0%, rgba(13, 110, 253, 0.02) 100%);
 }
+
 .service-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 16px 30px rgba(0,0,0,0.12);
+    transform: translateY(-10px);
+    box-shadow: var(--card-shadow-hover);
+    border-color: var(--link-color);
 }
-/* FIX: service icons use accent colour so they're visible in both themes */
+
 .service-card i {
     font-size: 2.8rem;
     margin-bottom: 0.75rem;
     color: var(--link-color);
+    transition: var(--transition-smooth);
+    display: inline-block;
 }
 
+.service-card:hover i {
+    transform: scale(1.15) rotate(-5deg);
+}
+
+.service-card h3 {
+    margin-bottom: 0.75rem;
+    font-size: 1.3rem;
+}
+
+.service-card p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
 
 /* ============================================================
-   TESTIMONIALS
+   TESTIMONIALS - Elegant card design
    ============================================================ */
 .testimonial-card {
-    border: none;
+    border: 1px solid var(--border-color);
     border-radius: 1rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    transition: box-shadow 0.2s;
-}
-.testimonial-card:hover {
-    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    box-shadow: var(--card-shadow);
+    transition: var(--transition-smooth);
+    position: relative;
 }
 
+.testimonial-card::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    font-size: 4rem;
+    color: var(--link-color);
+    opacity: 0.1;
+}
+
+.testimonial-card:hover {
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-5px);
+}
 
 /* ============================================================
-   GALLERY
+   GALLERY - With smooth scale on hover
    ============================================================ */
 .gallery-item {
     position: relative;
     overflow: hidden;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    transition: transform 0.2s;
+    border-radius: 0.75rem;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition-smooth);
 }
+
 .gallery-item:hover {
-    transform: scale(1.02);
+    box-shadow: var(--card-shadow-hover);
+    transform: scale(1.05);
 }
+
 .gallery-item img {
     width: 100%;
     height: 200px;
     object-fit: cover;
     display: block;
+    transition: var(--transition-smooth);
 }
 
+.gallery-item:hover img {
+    transform: scale(1.08);
+    filter: brightness(1.1);
+}
 
 /* ============================================================
-   FAQ ACCORDION — FIX: was hardcoded to light colours only
+   ACCORDION - Enhanced with smooth transitions
    ============================================================ */
 .faq-accordion .accordion-item {
     background-color: var(--card-bg);
     border-color: var(--border-color);
+    border-radius: 0.75rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid var(--border-color) !important;
 }
+
 .faq-accordion .accordion-button {
     background-color: var(--card-bg);
     color: var(--text-color);
+    font-weight: 500;
+    transition: var(--transition-smooth);
+    border-radius: 0.75rem;
 }
-/* FIX: open panel now uses theme variables */
+
 .faq-accordion .accordion-button:not(.collapsed) {
-    background-color: var(--accordion-active-bg);
+    background: linear-gradient(90deg, var(--accordion-active-bg) 0%, transparent 100%);
     color: var(--accordion-active-color);
     box-shadow: none;
 }
+
 .faq-accordion .accordion-button:focus {
-    box-shadow: 0 0 0 0.25rem rgba(13, 27, 42, 0.15);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    border-color: var(--link-color);
 }
-/* FIX: Bootstrap's chevron arrow is invisible in dark mode */
+
 [data-theme="dark"] .faq-accordion .accordion-button::after {
     filter: invert(1) brightness(2);
 }
+
 .faq-accordion .accordion-body {
     background-color: var(--card-bg);
     color: var(--text-color);
+    border-radius: 0 0 0.75rem 0.75rem;
 }
-/* Icons inside accordion */
+
 .faq-accordion i {
     color: var(--icon-color);
 }
 
-
 /* ============================================================
-   FORMS — GLOBAL
-   FIX: all inputs/selects/textareas now theme-aware, not just
-   those inside .form-card
+   FORMS - Enhanced inputs with focus states
    ============================================================ */
 input,
 select,
@@ -335,8 +529,12 @@ textarea,
 .form-select {
     background-color: var(--input-bg) !important;
     color: var(--text-color) !important;
-    border-color: var(--border-color) !important;
+    border: 2px solid var(--border-color) !important;
+    border-radius: 0.5rem;
+    transition: var(--transition-fast);
+    padding: 0.6rem 0.75rem;
 }
+
 input:focus,
 select:focus,
 textarea:focus,
@@ -345,78 +543,120 @@ textarea:focus,
     background-color: var(--input-bg) !important;
     color: var(--text-color) !important;
     border-color: var(--link-color) !important;
-    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    transform: translateY(-2px);
 }
 
-/* FIX: placeholder text visible in both themes */
 ::placeholder {
     color: var(--placeholder-color) !important;
     opacity: 1;
 }
 
-/* FIX: input-group addon (e.g. @ prefix, flag) theme-aware */
 .input-group-text {
     background-color: var(--input-group-bg) !important;
     color: var(--input-group-color) !important;
     border-color: var(--border-color) !important;
+    border-radius: 0.5rem;
 }
+
 .input-group-text i {
     color: var(--input-group-color);
 }
 
-/* Checkboxes / radio buttons */
 .form-check-input {
     background-color: var(--input-bg);
-    border-color: var(--border-color);
+    border: 2px solid var(--border-color);
+    transition: var(--transition-fast);
+    cursor: pointer;
 }
+
+.form-check-input:checked {
+    background-color: var(--link-color);
+    border-color: var(--link-color);
+}
+
 .form-check-label {
     color: var(--text-color);
+    cursor: pointer;
 }
 
-
 /* ============================================================
-   FORM CARD
+   FORM CARD - Premium styling
    ============================================================ */
 .form-card {
-    border: none;
+    border: 1px solid var(--border-color);
     border-radius: 1.5rem;
     padding: 2rem;
-    /* background handled by .card, .form-card rule above */
-}
-.form-card .form-control {
-    border-radius: 0.5rem;
-    padding: 0.6rem 1rem;
-}
-.form-card .form-check-label {
-    color: var(--text-color);
+    box-shadow: var(--card-shadow);
 }
 
+.form-card .form-control,
+.form-card .form-select {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+}
+
+.form-card .btn {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.5rem;
+}
 
 /* ============================================================
-   SOCIAL BUTTONS
+   BUTTONS - Enhanced with gradients & hover effects
+   ============================================================ */
+.btn {
+    transition: var(--transition-smooth);
+    font-weight: 600;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary {
+    background: var(--gradient-accent);
+    border: none;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(13, 110, 253, 0.3);
+    filter: brightness(1.1);
+}
+
+.btn:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* ============================================================
+   SOCIAL BUTTONS - Minimalist design
    ============================================================ */
 .social-btn {
     width: 100%;
-    border-radius: 50px;
-    padding: 0.6rem 0;
+    border-radius: 0.75rem;
+    padding: 0.75rem 0;
     font-weight: 500;
-    transition: all 0.2s;
-    border: 1px solid var(--border-color);
+    transition: var(--transition-smooth);
+    border: 2px solid var(--border-color);
     background: var(--card-bg);
     color: var(--text-color);
     cursor: pointer;
 }
+
 .social-btn:hover {
-    transform: scale(1.02);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    border-color: var(--link-color);
+    color: var(--link-color);
 }
+
 .social-btn i {
     color: inherit;
+    margin-right: 0.5rem;
 }
 
-
 /* ============================================================
-   DIVIDER
+   DIVIDER - Elegant separator
    ============================================================ */
 .divider-text {
     display: flex;
@@ -424,120 +664,295 @@ textarea:focus,
     text-align: center;
     color: var(--text-muted);
     font-size: 0.9rem;
+    margin: 1.5rem 0;
 }
+
 .divider-text::before,
 .divider-text::after {
     content: '';
     flex: 1;
     border-bottom: 1px solid var(--border-color);
 }
-.divider-text::before { margin-right: 0.5rem; }
-.divider-text::after  { margin-left:  0.5rem; }
 
+.divider-text::before { margin-right: 0.75rem; }
+.divider-text::after  { margin-left: 0.75rem; }
 
 /* ============================================================
-   PHONE / OTP INPUT
+   PHONE / OTP INPUT - Enhanced styling
    ============================================================ */
 .phone-input-group .form-control {
     border-radius: 0.5rem 0 0 0.5rem;
 }
+
 .phone-input-group .btn {
     border-radius: 0 0.5rem 0.5rem 0;
 }
-.otp-section { margin-top: 0.5rem; }
 
+.otp-section {
+    margin-top: 1rem;
+}
+
+.otp-input {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 0.5rem;
+}
 
 /* ============================================================
-   PASSWORD HINT & MATCH
+   PASSWORD STRENGTH INDICATOR
    ============================================================ */
 .password-hint {
     font-size: 0.8rem;
     color: var(--text-muted);
-    margin-top: 0.25rem;
+    margin-top: 0.5rem;
 }
+
 .match-check {
     font-size: 0.85rem;
-    margin-top: 0.25rem;
+    margin-top: 0.5rem;
 }
 
+.match-check.valid {
+    color: #28a745;
+}
+
+.match-check.invalid {
+    color: #dc3545;
+}
 
 /* ============================================================
-   COUNTERS (stats section)
+   COUNTERS - Stats section
    ============================================================ */
-.bg-dark .counter { color: #ffffff; }
-.bg-dark p        { color: #cccccc; }
+.counter {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--heading-color);
+}
 
+.bg-dark .counter { 
+    color: #ffffff; 
+}
+
+.bg-dark p { 
+    color: #cccccc; 
+}
 
 /* ============================================================
-   DROPDOWN MENUS — FIX: Bootstrap dropdowns theme-aware
+   DROPDOWN MENUS - Smooth transitions
    ============================================================ */
 .dropdown-menu {
     background-color: var(--card-bg) !important;
     border-color: var(--border-color) !important;
+    border-radius: 0.75rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    animation: slideDown 0.2s ease-out;
 }
+
 .dropdown-item {
     color: var(--text-color) !important;
+    transition: var(--transition-fast);
+    border-radius: 0.5rem;
+    margin: 0.25rem 0.5rem;
 }
+
 .dropdown-item:hover,
 .dropdown-item:focus {
     background-color: var(--header-bg) !important;
     color: var(--heading-color) !important;
+    transform: translateX(5px);
 }
+
 .dropdown-divider {
     border-color: var(--border-color) !important;
 }
 
-
 /* ============================================================
-   LIST GROUP — FIX: theme-aware
+   LIST GROUP - Enhanced styling
    ============================================================ */
 .list-group-item {
     background-color: var(--card-bg);
     color: var(--text-color);
     border-color: var(--border-color);
+    transition: var(--transition-fast);
 }
 
+.list-group-item:hover {
+    background-color: var(--header-bg);
+    transform: translateX(5px);
+}
+
+.list-group-item.active {
+    background-color: var(--link-color);
+    border-color: var(--link-color);
+}
 
 /* ============================================================
-   MODAL — FIX: modal background and close button
+   MODAL - Enhanced with animations
    ============================================================ */
 .modal-content {
     background-color: var(--card-bg);
     color: var(--text-color);
     border-color: var(--border-color);
+    border-radius: 1rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideDown 0.3s ease-out;
 }
+
 .modal-header,
 .modal-footer {
     border-color: var(--border-color);
+    background-color: var(--header-bg);
 }
-/* FIX: Bootstrap's X (close) button invisible in dark mode */
+
 [data-theme="dark"] .btn-close {
     filter: invert(1) brightness(2);
 }
 
-
 /* ============================================================
-   TABLES — FIX: theme-aware
+   TABLES - Enhanced with striping & borders
    ============================================================ */
 .table {
     color: var(--text-color);
     border-color: var(--border-color);
 }
+
 .table > :not(caption) > * > * {
     background-color: var(--card-bg);
     color: var(--text-color);
     border-color: var(--border-color);
+    transition: var(--transition-fast);
 }
+
+.table > tbody > tr:hover {
+    background-color: var(--header-bg);
+}
+
 [data-theme="dark"] .table-striped > tbody > tr:nth-of-type(odd) > * {
     background-color: rgba(255, 255, 255, 0.04);
     color: var(--text-color);
 }
 
+.table-hover tbody tr:hover {
+    transform: scale(1.01);
+}
+
+/* ============================================================
+   FEATURES SECTION - With background image
+   ============================================================ */
+.features-section {
+    background: linear-gradient(135deg, rgba(13, 27, 42, 0.85) 0%, rgba(27, 58, 75, 0.85) 100%),
+                url('https://images.unsplash.com/photo-1516387938699-a93023bc706d?w=1400&q=80') center/cover;
+    color: white;
+    padding: 5rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.features-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,%3Csvg width="60" height="60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"%3E%3Cpath d="M0 30 Q15 0 30 30 T60 30"/%3E%3C/g%3E%3C/svg%3E');
+    z-index: 1;
+}
+
+.features-section > * {
+    position: relative;
+    z-index: 2;
+}
+
+.feature-item {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+.feature-item:nth-child(1) { animation-delay: 0.1s; }
+.feature-item:nth-child(2) { animation-delay: 0.2s; }
+.feature-item:nth-child(3) { animation-delay: 0.3s; }
+
+.feature-item::before {
+    content: '✓';
+    color: #00d4ff;
+    font-size: 1.8rem;
+    font-weight: bold;
+    flex-shrink: 0;
+    animation: pulse 2s infinite;
+}
+
+/* ============================================================
+   BADGES & TAGS
+   ============================================================ */
+.badge {
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    transition: var(--transition-fast);
+}
+
+.badge:hover {
+    transform: scale(1.05);
+}
+
+/* ============================================================
+   LOADING STATES - Shimmer effect
+   ============================================================ */
+.skeleton {
+    background: linear-gradient(90deg, var(--border-color) 0%, rgba(255, 255, 255, 0.2) 50%, var(--border-color) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+}
 
 /* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 768px) {
-    .hero h1   { font-size: 2.2rem; }
-    .hero .lead { font-size: 1.1rem; }
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero .lead {
+        font-size: 1rem;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+    }
+
+    .navbar h1 {
+        font-size: 1.3rem;
+    }
+
+    .navbar ul {
+        gap: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .modal-content {
+        border-radius: 0.75rem;
+    }
+
+    .feature-item {
+        gap: 1rem;
+    }
+
+    .feature-item::before {
+        font-size: 1.5rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }

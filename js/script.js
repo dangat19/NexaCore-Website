@@ -92,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 : '<i class="fas fa-phone me-2 text-primary"></i>Sign in with Phone Number';
         });
     }
+
     const showPhoneSignup = document.getElementById('showPhoneSignup');
     const phoneSignupSection = document.getElementById('phoneSignupSection');
     if (showPhoneSignup && phoneSignupSection) {
@@ -121,73 +122,224 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 2500);
     }
 
+    // ===== FIREBASE AUTH =====
+    const firebaseConfig = window.NEXACORE_FIREBASE_CONFIG;
+    const hasFirebaseConfig = firebaseConfig
+        && firebaseConfig.apiKey
+        && !firebaseConfig.apiKey.startsWith('YOUR_')
+        && firebaseConfig.authDomain
+        && !firebaseConfig.authDomain.startsWith('YOUR_');
+    const firebaseReady = Boolean(window.firebase && hasFirebaseConfig);
+    let auth = null;
+    let confirmationResult = null;
+    let recaptchaVerifier = null;
+
+    if (firebaseReady) {
+        firebase.initializeApp(firebaseConfig);
+        auth = firebase.auth();
+    }
+
+    function showFirebaseSetupMessage() {
+        showToast('Firebase is not configured yet. Add your project keys in js/firebase-config.js.', 'warning');
+    }
+
+    function getFirebaseError(error) {
+        if (!error || !error.code) return 'Authentication failed. Please try again.';
+        const messages = {
+            'auth/account-exists-with-different-credential': 'An account already exists with this email using another sign-in method.',
+            'auth/cancelled-popup-request': 'Another sign-in request interrupted the popup. Please try again.',
+            'auth/configuration-not-found': 'Firebase Auth configuration was not found. Enable the provider in Firebase Console and verify project config.',
+            'auth/email-already-in-use': 'That email is already registered. Try signing in instead.',
+            'auth/invalid-email': 'Please enter a valid email address.',
+            'auth/invalid-phone-number': 'Use international phone format, for example +15551234567.',
+            'auth/invalid-verification-code': 'The OTP code is incorrect.',
+            'auth/missing-verification-code': 'Please enter the OTP code.',
+            'auth/operation-not-allowed': 'This sign-in provider is not enabled in Firebase Console.',
+            'auth/operation-not-supported-in-this-environment': 'Popup sign-in is not supported in this environment. Redirect sign-in will be used.',
+            'auth/popup-closed-by-user': 'The sign-in popup was closed before finishing.',
+            'auth/popup-blocked': 'The sign-in popup was blocked. Please allow popups and try again.',
+            'auth/too-many-requests': 'Too many attempts. Please wait a moment and try again.',
+            'auth/unauthorized-domain': 'This domain is not authorized in Firebase Authentication settings.',
+            'auth/user-not-found': 'No account was found with that email.',
+            'auth/wrong-password': 'The password is incorrect.'
+        };
+        const readable = messages[error.code] || error.message || 'Authentication failed. Please try again.';
+        return `${readable} (${error.code})`;
+    }
+
+    function getProvider(providerName) {
+        if (providerName === 'google') {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            provider.setCustomParameters({ prompt: 'select_account' });
+            return provider;
+        }
+        if (providerName === 'github') return new firebase.auth.GithubAuthProvider();
+        if (providerName === 'microsoft') return new firebase.auth.OAuthProvider('microsoft.com');
+        return null;
+    }
+
+    function getProviderLabelFromId(providerId) {
+        if (providerId === 'google.com') return 'Google';
+        if (providerId === 'github.com') return 'GitHub';
+        if (providerId === 'microsoft.com') return 'Microsoft';
+        return 'Social Provider';
+    }
+
+    function shouldUseRedirectFlow() {
+        const ua = navigator.userAgent || '';
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
+        const isInAppBrowser = /FBAN|FBAV|Instagram|Line|wv\)|; wv\b/i.test(ua);
+        return isMobile || isInAppBrowser;
+    }
+
+    function authenticateWithProvider(provider, label) {
+        if (shouldUseRedirectFlow()) {
+            showToast(`Continuing with ${label}...`, 'info');
+            return auth.signInWithRedirect(provider);
+        }
+
+        return auth.signInWithPopup(provider)
+            .then(() => finishAuth(label))
+            .catch(error => {
+                const canFallbackToRedirect = error && (
+                    error.code === 'auth/popup-blocked' ||
+                    error.code === 'auth/popup-closed-by-user' ||
+                    error.code === 'auth/cancelled-popup-request' ||
+                    error.code === 'auth/operation-not-supported-in-this-environment'
+                );
+
+                if (canFallbackToRedirect) {
+                    showToast(`Popup blocked. Redirecting to ${label} sign-in...`, 'info');
+                    return auth.signInWithRedirect(provider);
+                }
+
+                throw error;
+            });
+    }
+
+    function finishAuth(provider) {
+        const isSignUp = window.location.pathname.includes('signup.html');
+        if (isSignUp) {
+            signUpSuccess(provider);
+        } else {
+            signInSuccess(provider);
+        }
+    }
+
+    function getRecaptchaContainerId() {
+        return document.getElementById('recaptcha-container')
+            ? 'recaptcha-container'
+            : 'recaptcha-signup-container';
+    }
+
+    function getRecaptchaVerifier() {
+        if (recaptchaVerifier) return recaptchaVerifier;
+        recaptchaVerifier = new firebase.auth.RecaptchaVerifier(getRecaptchaContainerId(), {
+            size: 'invisible'
+        });
+        return recaptchaVerifier;
+    }
+
     // ===== REDIRECT WITH SUCCESS MESSAGE =====
     function signInSuccess(provider) {
-        showToast(`✅ Signed in with ${provider}! Redirecting...`, 'success');
+        showToast(`Signed in with ${provider}! Redirecting...`, 'success');
         setTimeout(() => {
             window.location.href = 'index.html';
         }, 1500);
     }
 
     function signUpSuccess(provider) {
-        showToast(`🎉 Account created with ${provider}! Redirecting...`, 'success');
+        showToast(`Account created with ${provider}! Redirecting...`, 'success');
         setTimeout(() => {
             window.location.href = 'index.html';
         }, 1500);
     }
 
+    if (firebaseReady) {
+        auth.getRedirectResult()
+            .then(result => {
+                if (result && result.user) {
+                    const providerId = result.additionalUserInfo && result.additionalUserInfo.providerId;
+                    finishAuth(getProviderLabelFromId(providerId));
+                }
+            })
+            .catch(error => showToast(getFirebaseError(error), 'danger'));
+    }
+
     // ===== SOCIAL SIGN-IN BUTTONS =====
-    document.querySelectorAll('.social-btn').forEach(btn => {
+    document.querySelectorAll('.social-btn[data-auth-provider]').forEach(btn => {
         btn.addEventListener('click', function (e) {
             e.preventDefault();
-            const text = this.textContent.trim();
-            let provider = text.replace(/Sign in with /i, '').replace(/Sign up with /i, '').trim();
-            if (!provider) provider = 'Social';
-            
-            // Check if this is sign-in or sign-up page
-            const isSignUp = window.location.pathname.includes('signup.html');
-            if (isSignUp) {
-                signUpSuccess(provider);
-            } else {
-                signInSuccess(provider);
+            if (!firebaseReady) {
+                showFirebaseSetupMessage();
+                return;
             }
+            const providerName = this.getAttribute('data-auth-provider');
+            const provider = getProvider(providerName);
+            const label = this.textContent.replace(/Sign in with |Sign up with /i, '').trim();
+
+            if (!provider) {
+                showToast('Selected sign-in provider is not available.', 'warning');
+                return;
+            }
+
+            authenticateWithProvider(provider, label)
+                .catch(error => showToast(getFirebaseError(error), 'danger'));
         });
     });
 
     // ===== PHONE SIGN-IN / SIGN-UP =====
-    // Send OTP
     document.querySelectorAll('#sendOtpBtn, #sendOtpSignupBtn').forEach(btn => {
         if (btn) {
             btn.addEventListener('click', function (e) {
                 e.preventDefault();
+                if (!firebaseReady) {
+                    showFirebaseSetupMessage();
+                    return;
+                }
                 const parent = this.closest('.phone-input-group');
                 const input = parent.querySelector('input[type="tel"]');
-                if (input && input.value.trim().length > 5) {
-                    showToast(`📱 OTP sent to ${input.value}`, 'info');
-                } else {
-                    showToast('⚠️ Please enter a valid phone number.', 'warning');
+                if (!input || input.value.trim().length <= 5) {
+                    showToast('Please enter a valid phone number.', 'warning');
+                    return;
                 }
+                auth.signInWithPhoneNumber(input.value.trim(), getRecaptchaVerifier())
+                    .then(result => {
+                        confirmationResult = result;
+                        showToast(`OTP sent to ${input.value.trim()}`, 'info');
+                    })
+                    .catch(error => {
+                        if (recaptchaVerifier) {
+                            recaptchaVerifier.clear();
+                            recaptchaVerifier = null;
+                        }
+                        showToast(getFirebaseError(error), 'danger');
+                    });
             });
         }
     });
 
-    // Verify OTP
     document.querySelectorAll('#verifyOtpBtn, #verifyOtpSignupBtn').forEach(btn => {
         if (btn) {
             btn.addEventListener('click', function (e) {
                 e.preventDefault();
+                if (!firebaseReady) {
+                    showFirebaseSetupMessage();
+                    return;
+                }
                 const parent = this.closest('.otp-section');
                 const input = parent.querySelector('input[type="text"]');
-                if (input && input.value.trim().length === 6) {
-                    const isSignUp = window.location.pathname.includes('signup.html');
-                    if (isSignUp) {
-                        signUpSuccess('Phone Number');
-                    } else {
-                        signInSuccess('Phone Number');
-                    }
-                } else {
-                    showToast('⚠️ Please enter a 6-digit OTP.', 'warning');
+                if (!confirmationResult) {
+                    showToast('Please send the OTP first.', 'warning');
+                    return;
                 }
+                if (!input || input.value.trim().length !== 6) {
+                    showToast('Please enter a 6-digit OTP.', 'warning');
+                    return;
+                }
+                confirmationResult.confirm(input.value.trim())
+                    .then(() => finishAuth('Phone Number'))
+                    .catch(error => showToast(getFirebaseError(error), 'danger'));
             });
         }
     });
@@ -197,12 +349,18 @@ document.addEventListener('DOMContentLoaded', function () {
     if (signinForm) {
         signinForm.addEventListener('submit', function (e) {
             e.preventDefault();
+            if (!firebaseReady) {
+                showFirebaseSetupMessage();
+                return;
+            }
             const email = document.getElementById('signinEmail').value.trim();
             const pwd = document.getElementById('signinPassword').value.trim();
             if (email && pwd) {
-                signInSuccess('Email');
+                auth.signInWithEmailAndPassword(email, pwd)
+                    .then(() => signInSuccess('Email'))
+                    .catch(error => showToast(getFirebaseError(error), 'danger'));
             } else {
-                showToast('⚠️ Please fill in all fields.', 'warning');
+                showToast('Please fill in all fields.', 'warning');
             }
         });
     }
@@ -220,22 +378,31 @@ document.addEventListener('DOMContentLoaded', function () {
             const terms = document.getElementById('terms').checked;
 
             if (!firstName || !lastName || !email || !pwd || !confirmPwd) {
-                showToast('⚠️ Please fill in all fields.', 'warning');
+                showToast('Please fill in all fields.', 'warning');
                 return;
             }
             if (pwd.length < 8) {
-                showToast('⚠️ Password must be at least 8 characters.', 'warning');
+                showToast('Password must be at least 8 characters.', 'warning');
                 return;
             }
             if (pwd !== confirmPwd) {
-                showToast('⚠️ Passwords do not match.', 'warning');
+                showToast('Passwords do not match.', 'warning');
                 return;
             }
             if (!terms) {
-                showToast('⚠️ Please agree to the Terms of Service.', 'warning');
+                showToast('Please agree to the Terms of Service.', 'warning');
                 return;
             }
-            signUpSuccess('Email');
+            if (!firebaseReady) {
+                showFirebaseSetupMessage();
+                return;
+            }
+            auth.createUserWithEmailAndPassword(email, pwd)
+                .then(result => result.user.updateProfile({
+                    displayName: `${firstName} ${lastName}`
+                }))
+                .then(() => signUpSuccess('Email'))
+                .catch(error => showToast(getFirebaseError(error), 'danger'));
         });
     }
 
@@ -244,7 +411,18 @@ document.addEventListener('DOMContentLoaded', function () {
         if (link.textContent.trim() === 'Forgot password?') {
             link.addEventListener('click', function (e) {
                 e.preventDefault();
-                showToast('📧 Password reset link sent to your email.', 'info');
+                if (!firebaseReady) {
+                    showFirebaseSetupMessage();
+                    return;
+                }
+                const email = document.getElementById('signinEmail').value.trim();
+                if (!email) {
+                    showToast('Enter your email first, then click forgot password.', 'warning');
+                    return;
+                }
+                auth.sendPasswordResetEmail(email)
+                    .then(() => showToast('Password reset link sent to your email.', 'info'))
+                    .catch(error => showToast(getFirebaseError(error), 'danger'));
             });
         }
     });

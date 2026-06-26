@@ -1,0 +1,2 @@
+-- NexaCore database setup placeholder.
+-- Add tables, indexes, and seed data here when the backend is implemented.

@@ -1,0 +1,10 @@
+{
+  "name": "nexacore-backend",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Reserved backend workspace for NexaCore API and database work.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

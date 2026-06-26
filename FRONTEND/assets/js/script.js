@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function showFirebaseSetupMessage() {
-        showToast('Firebase is not configured yet. Add your project keys in js/firebase-config.js.', 'warning');
+        showToast('Firebase is not configured yet. Add your project keys in assets/js/firebase-config.js.', 'warning');
     }
 
     function getFirebaseError(error) {

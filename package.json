@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "dev": "http-server . -p 5500 -c-1",
+    "dev": "http-server FRONTEND -p 5500 -c-1",
     "start": "npm run dev"
   },
   "dependencies": {
